@@ -1,0 +1,30 @@
+button:hover {
+    cursor: pointer;
+}
+
+#textArea {
+    width: 500px;
+    height: 200px;
+    resize: none;
+    margin-top: 10px;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 80%;
+    align-items: center;
+ 
+
+}
+
+#scoreWindow {
+    display: flex;
+    padding: 5px;
+    
+}
+
+#playerScore, #computerScore {
+    margin: 10px;
+}
