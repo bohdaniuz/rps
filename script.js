@@ -1,67 +1,29 @@
-function computerPlay(){
-    
+let playerScore = 0;
+let computerScore = 0;
+
+const buttons = document.querySelectorAll('.btn');
+const results = document.querySelector('.resultsWindow');
+const clear = document.querySelector('#clear');
+const plScore = document.querySelector('#playerScore');
+const pcScore = document.querySelector('#computerScore');
+const txtArea = document.querySelector('#textArea');
+
+plScore.textContent = `Player: ${playerScore}`;
+pcScore.textContent = `Computer: ${computerScore}`;
+function init() {
+    txtArea.value = '';
+}
+
+window.onload = init;
+
+function lmao() {
+txtArea.scrollTop = txtArea.scrollHeight;
+}
+
+function computerPlay() {
     let choices = ['rock', 'paper', 'scissors'];
 
     return choices[Math.floor(Math.random()*choices.length)];
-    
-}
-
-function playerPlay(){
-
-    let playerChoice = prompt("Make your play:");
-
-    return playerChoice.toLowerCase();
-
-}
-
-function playRound() {
-
-    let playerSelection = playerPlay();
-    let computerSelection = computerPlay ();
-
-    switch (playerSelection) {
-        case 'rock':
-            if (computerSelection === 'rock') {
-                console.log("It's a tie!");
-            }
-            else if (computerSelection === 'scissors') {
-                console.log("Player wins!");
-                playerTally();
-            }
-            else {
-                console.log("Computer wins!");
-                computerTally();
-            }
-            break;
-        case 'paper':
-            if (computerSelection === 'rock') {
-                console.log("Player wins!");
-                playerTally();
-            }
-            else if (computerSelection === "scissors") {
-                console.log("Computer wins!");
-                computerTally();
-            }
-            else {
-                console.log("It's a tie!");
-            }
-            break;
-        case 'scissors':
-            if (computerSelection === 'rock') {
-                console.log("Computer wins!");
-                computerTally();
-            }
-            else if (computerSelection === 'scissors') {
-                console.log("It's a tie!");
-            }
-            else {
-                console.log("Player wins!");
-                playerTally();
-            }
-            break;
-    }
-
-
 }
 
 function playerTally() {
@@ -71,27 +33,117 @@ function computerTally() {
     return computerScore++;
 }
 
-function playGame() {
-    let i = 0;
+function showOutcome(st) {
+    /* const p = document.createElement('p');
+    p.textContent = `${st}`;
+     results.appendChild(p); */
 
-    console.log("This is RockPaperScissors game against computer. Best of 5");
+     txtArea.value += `${st} \n`;
+    
+}
 
-    while (i <=5) {
-        playRound();
-        i++;
+
+
+function resetTheGame() {
+
+    showOutcome('Try again!');
+    
+    const resetButton = document.createElement('button');
+    resetButton.textContent = 'Play Again';
+    results.appendChild(resetButton);
+
+    buttons.forEach(el => el.disabled = true);
+
+    resetButton.addEventListener('click', () => {
+        txtArea.value = '';
+        playerScore = 0;
+        computerScore = 0;
+        plScore.textContent = `Player: ${playerScore}`;
+        pcScore.textContent = `Computer: ${computerScore}`;
+
+        resetButton.remove();
+        buttons.forEach(el => el.disabled = false);
+    })
+    
+}
+
+function boFive() {
+    if (playerScore === 3) {
+        showOutcome('Player wins the game!');
+        resetTheGame();
     }
-    if (playerScore > computerScore) {
-        console.log("Final Result: Player wins! Congratulations!");
-    }
-    else if (playerScore < computerScore) {
-        console.log("Final Result: Computer wins! Better luck next time!");
-    }
-    else {
-        console.log("Final Result: It's a tie! Try again!");
+    else if  (computerScore === 3) {
+        showOutcome('Computer wins the game!');
+        resetTheGame();
     }
 
 }
 
-let tieScore = 0;
-let playerScore = 0;
-let computerScore = 0;
+function playRound(e) {
+    
+    let playerSelection = e;
+    let computerSelection = computerPlay ();
+
+    showOutcome(`Player chose ${playerSelection}.`);
+    showOutcome(`Computer chose ${computerSelection}.`);
+
+    switch (playerSelection) {
+        case 'rock':
+                if (computerSelection === 'rock') {
+                showOutcome("It's a tie!");
+            }
+            else if (computerSelection === 'scissors') {
+                showOutcome("Player wins the round!");
+                playerTally();
+            }
+            else {
+                showOutcome("Computer wins the round!");
+                computerTally();
+            }
+            break;
+        case 'paper':
+            if (computerSelection === 'rock') {
+                showOutcome("Player wins the round!");
+                playerTally();
+            }
+            else if (computerSelection === "scissors") {
+                showOutcome("Computer wins the round!");
+                computerTally();
+            }
+            else {
+                showOutcome("It's a tie!");
+            }
+            break;
+        case 'scissors':
+            if (computerSelection === 'rock') {
+                showOutcome("Computer wins the round!");
+                computerTally();
+            }
+            else if (computerSelection === 'scissors') {
+                showOutcome("It's a tie!");
+            }
+            else {
+                showOutcome("Player wins the round!");
+                playerTally();
+            }
+            break;
+        
+    }
+    
+
+    plScore.textContent = `Player: ${playerScore}`;
+    pcScore.textContent = `Computer: ${computerScore}`;
+    boFive();
+    lmao();
+}
+
+buttons.forEach(el => el.addEventListener('click', () => {
+    playRound(el.dataset.choice);
+
+}))
+
+/* clear.addEventListener('click', () =>{
+    txtArea.value = '';
+    plScore.textContent = 0;
+    pcScore.textContent = 0;
+}); */
